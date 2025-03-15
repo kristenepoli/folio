@@ -11,12 +11,17 @@
 
     <!-- Fancybox CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>
-         <style>
-         /* Test with a very obvious color change to see if our CSS overrides are working */
-         .fancybox__container .fancybox__backdrop {
-         background-color: #e6f2ff !important; /* Light blue background */
-          opacity: 1 !important; /* Full opacity to make it obvious */}
-   </style>
+        <style>
+         /* Only apply when Fancybox is active */
+         body.with-fancybox .fancybox__backdrop {
+         background-color: #ffffff !important; /* White background */
+         opacity: 0.95 !important;]
+  
+         /* Reset when closed */
+         body:not(.with-fancybox) .fancybox__backdrop {
+         background-color: transparent !important;
+         opacity: 0 !important;}
+         </style>
     
     <!-- Favicons -->
     <title> Kristen Poli </title>
