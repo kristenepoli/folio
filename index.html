@@ -87,15 +87,18 @@
 
     <!-- Fancybox JS -->
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
-<script>
-Fancybox.bind("[data-fancybox]", {
+    <script>
+    // Wait for the DOM to be fully loaded
+document.addEventListener("DOMContentLoaded", function() {
+  // Initialize Fancybox with options
+  Fancybox.bind("[data-fancybox]", {
     // Initial View options
     backdropColor: "#ffffff",
     backdropOpacity: 0.95,
     transition: "fade",
     transitionDuration: 366,
     
-    // PDF Display options and scrollbar settings
+    // PDF Display options
     iframe: {
       scrolling: "auto",
       css: {
@@ -107,8 +110,7 @@ Fancybox.bind("[data-fancybox]", {
     // Simple controls
     toolbar: false,
     closeButton: "top"
-});
-</script>
+  });</script>
 
 </body>
 </html>
