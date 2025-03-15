@@ -9,3 +9,10 @@
 
   object-fit: cover;
   object-position: center right;}
+
+@media (min-width: 900px) {
+  .intro {
+    justify-self: end;
+    text-align: right;
+  }
+}
