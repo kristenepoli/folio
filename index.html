@@ -92,8 +92,23 @@
     <script src="assets/js/main.js"></script>
 
     <!-- Fancybox JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
-    <script> Fancybox.bind("[data-fancybox]"); </script>
+    <script>
+    Fancybox.bind("[data-fancybox]", {
+      iframe: {
+        // This configuration hides the toolbar but keeps scrollbars
+        attributes: {
+          allowfullscreen: true,
+          toolbar: "0",     // Hides the toolbar (including filename)
+          navpanes: "0",    // Hides navigation panes
+          statusbar: "0",   // Hides the status bar
+          scrollbar: "1"    // Explicitly shows scrollbars (set to "1")
+        },
+        // Make sure automatic scrollbar detection is enabled
+        scrolling: "auto"
+      }
+    });
+    </script>
+
 
 </body>
 </html>
