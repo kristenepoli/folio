@@ -87,7 +87,18 @@
 
     <!-- Fancybox JS -->
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
-    <script> Fancybox.bind("[data-fancybox]"); </script>
+    <script>
+        Fancybox.bind("[data-fancybox]", {
+        // Initial View options
+       backdropColor: "#ffffff",
+       backdropOpacity: 0.95,
+       transition: "fade",
+       transitionDuration: 366,
+    
+       // Ensure scrollbars remain visible
+       iframe: {
+       scrolling: "auto"}});
+</script>
 
 </body>
 </html>
