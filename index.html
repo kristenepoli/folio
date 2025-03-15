@@ -8,6 +8,9 @@
 
     <!-- Styles -->
     <link href="assets/css/main.css" rel="stylesheet">
+
+    <!-- Fancybox CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>
     
     <!-- Favicons -->
     <title> Kristen Poli </title>
@@ -16,16 +19,16 @@
 <body>
     
     <header>
-        <h1>Kristen Poli<br><em>Journalist</em></h1>
+        <h1>Kristen Poli<br><em>Journalist & Content Writer</em></h1>
         <div class="intro">
         <p>I'm a writer and investigative journalist. I have an M.Phil in Creative Writing from <a href="https://www.tcd.ie">Trinity College Dublin</a>, an interest in data privacy, and 8+ years of experience working with tech teams. </p>
             <p>If you're looking help you with your next project, <a href="https://cal.com/kpoli">let's talk</a>.</p>
         </div>
     </header>
     <section class="portfolio">
-            <a class="project" href="pdfs/PeriodTrackingAppsRanked.pdf" target="_blank">
+            <a class="project" href="pdfs/PeriodTrackingAppsRanked.pdf" data-fancybox data-type="pdf>
             <figure class="project-content">
-                <img class="project-image" src="projects/WIRED-PTF.png" alt="Screenshot of WIRED article">
+                <img class="project-image" src="projects/WIRED-PTF.png" alt="WIRED Magazine">
             </figure>
         </a>
             <a class="project" href="pdfs/GenZInTheSkilledWorkforce.pdf" target="_blank">
@@ -81,5 +84,10 @@
 
     <!-- Scripts -->
     <script src="assets/js/main.js"></script>
+
+    <!-- Fancybox JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script> Fancybox.bind("[data-fancybox]"); </script>
+
 </body>
 </html>
