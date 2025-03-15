@@ -31,7 +31,7 @@
                 <img class="project-image" src="projects/WIRED-PTF.png" alt="WIRED Magazine">
             </figure>
         </a>
-            <a class="project" href="pdfs/GenZInTheSkilledWorkforce.pdf" target="_blank">
+            <a class="project" href="pdfs/GenZInTheSkilledWorkforce.pdf" data-fancybox data-type="pdf">
             <figure class="project-content">
                 <img class="project-image" src="projects/readytohirePTF.png" alt="Screenshot of WIRED article">
             </figure>
@@ -42,12 +42,12 @@
                </figcaption>
          </figure>
         </a>
-            <a class="project" href="pdfs/SkillDataforTalentAcquisition.pdf" target="_blank">
+            <a class="project" href="pdfs/SkillDataforTalentAcquisition.pdf" data-fancybox data-type="pdf">
             <figure class="project-content">
                 <img class="project-image" src="projects/rhetorik-PTF.jpeg" alt="Screenshot of the Bespoke homepage">
             </figure>
         </a>
-            <a class="project" href="pdfs/IsMyContentOnBrand.pdf" target="_blank">
+            <a class="project" href="pdfs/IsMyContentOnBrand.pdf" data-fancybox data-type="pdf">
             <figure class="project-content">
                 <img class="project-image" src="projects/ContentlyBluePTF.png" alt="Screenshot of the GoPractice article">
             </figure>
@@ -58,7 +58,7 @@
             </figure>
             </a>
              </a>
-            <a class="project" href="DataVisualizationForPMs.pdf" target="_blank">
+            <a class="project" href="DataVisualizationForPMs.pdf" data-fancybox data-type="pdf">
             <figure class="project-content">
                 <img class="project-image" src="projects/gopractice-PTF.jpeg" alt="Screenshot of the GoPractice article">
             </figure>
@@ -87,32 +87,7 @@
 
     <!-- Fancybox JS -->
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
-    <script>
-    // Wait for the DOM to be fully loaded
-document.addEventListener("DOMContentLoaded", function() {
-  // Initialize Fancybox with options
-  Fancybox.bind("[data-fancybox]", {
-    // Initial View options
-    backdropColor: "#ffffff",
-    backdropOpacity: 0.95,
-    transition: "fade",
-    transitionDuration: 366,
-    
-    // PDF Display options
-    iframe: {
-      scrolling: "auto",
-      css: {
-        width: "90%",
-        height: "90%"
-      }
-    },
-    
-    // Simple controls
-    toolbar: false,
-    closeButton: "top"
-  });</script>
+    <script> Fancybox.bind("[data-fancybox]"); </script>
 
 </body>
 </html>
-
-
