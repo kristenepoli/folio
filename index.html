@@ -174,76 +174,48 @@
     <!-- Fancybox JS -->
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script>
-    // Enhanced Fancybox initialization with working sidebar for PDFs
+    // Enhanced Fancybox initialization with detailed captions instead of sidebar
     Fancybox.bind("[data-fancybox]", {
-        placeFocusBack: false,
-
-        tpl: {
-            main: `<div class="fancybox__container has-sidebar" role="dialog" aria-modal="true" aria-label="{{MODAL}}" tabindex="-1">
-                <div class="fancybox__backdrop"></div>
-                <div class="fancybox__cols">
-                    <div class="fancybox__col">
-                        <div class="fancybox__carousel"></div>
-                        <div class="fancybox__footer"></div>
-                    </div>
-                    <div class="fancybox__col">
-                        <div class="fancybox__data">
-                            <h2 id="fancybox_title"></h2>
-                            <div class="format" id="fancybox_format"></div>
-                            <div class="client" id="fancybox_client"></div>
-                            <div class="description" id="fancybox_desc"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>`,
+        // Use caption function to display project information below PDF
+        caption: function (instance, slide) {
+            // Get the data attributes
+            const title = slide.triggerEl.dataset.docTitle || "";
+            const format = slide.triggerEl.dataset.format || "";
+            const client = slide.triggerEl.dataset.client || "";
+            const desc = slide.triggerEl.dataset.fullDesc || "";
+            
+            // Create a formatted HTML caption with all project info
+            let captionHTML = '';
+            
+            if (title) {
+                captionHTML += `<h3 style="margin: 0 0 10px 0; font-weight: bold; font-size: 18px; color: #333;">${title}</h3>`;
+            }
+            
+            if (format || client) {
+                captionHTML += '<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">';
+                if (format) {
+                    captionHTML += `<div><strong>Format:</strong> ${format}</div>`;
+                }
+                if (client) {
+                    captionHTML += `<div><strong>Client:</strong> ${client}</div>`;
+                }
+                captionHTML += '</div>';
+            }
+            
+            if (desc) {
+                captionHTML += `<div style="margin-top: 10px; line-height: 1.5; font-size: 14px;">${desc}</div>`;
+            }
+            
+            return captionHTML;
         },
-
-        idle: false,
-        compact: false,
-        dragToClose: false,
-
+        
+        // Basic toolbar with minimal options
         Toolbar: {
-            parentEl: (toolbar) => {
-                return toolbar.instance.container.querySelector('.fancybox__col');
-            },
-            items: {
-                sidebar: {
-                    tpl: `<button class="f-button"><svg viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></button>`,
-                    click: (toolbar) => {
-                        toolbar.instance.container.classList.toggle('has-sidebar');
-                    },
-                },
-            },
-            display: {
-                left: ['infobar'],
-                middle: [],
-                right: ['sidebar', 'close'],
-            },
-        },
-
-        on: {
-            'Carousel.ready Carousel.change': (fancybox) => {
-                // Get the slide information from data attributes
-                const slide = fancybox.getSlide();
-                const el = slide.triggerEl;
-                
-                const titleVal = el.dataset.docTitle || "";
-                const formatVal = el.dataset.format || "";
-                const clientVal = el.dataset.client || "";
-                const descVal = el.dataset.fullDesc || "";
-                
-                // Update the sidebar elements
-                const titleEl = document.getElementById('fancybox_title');
-                const formatEl = document.getElementById('fancybox_format');
-                const clientEl = document.getElementById('fancybox_client');
-                const descEl = document.getElementById('fancybox_desc');
-
-                if (titleEl) titleEl.innerHTML = titleVal;
-                if (formatEl) formatEl.innerHTML = formatVal ? `<strong>Format:</strong> ${formatVal}` : '';
-                if (clientEl) clientEl.innerHTML = clientVal ? `<small>Client: ${clientVal}</small>` : '';
-                if (descEl) descEl.innerHTML = descVal;
-            },
-        },
+            display: [
+                { id: "counter", position: "center" },
+                { id: "close", position: "right" }
+            ]
+        }
     });
     </script>
 
