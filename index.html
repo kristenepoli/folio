@@ -44,7 +44,7 @@
            data-full-desc="This follow-up investigation to my period tracking app analysis expanded the scope to examine telehealth platforms and how they handle sensitive patient data.<br><br>The research included reviewing HIPAA compliance documentation, speaking with cybersecurity experts, and testing the security features of major telehealth services. I focused particularly on identifying potential vulnerabilities in data transmission and storage practices that could put patient information at risk.<br><br>This piece was commissioned by WIRED as part of their ongoing technology ethics coverage and has been referenced in discussions about healthcare privacy legislation." style="display: none;"></a>
         
         <!-- CENGAGE PROJECT -->
-        <a class="project" href="pdfs/ReadytoHire-Whitepaperpdf.pdf" data-fancybox="cengage-gallery" 
+        <a class="project" href="pdfs/WhitepaperGenZintheSkilledWorkforce" data-fancybox="cengage-gallery" 
            data-doc-title="Gen Z in the Skilled Workforce: Opportunities and Trends" 
            data-format="Industry Whitepaper"
            data-client="Cengage"
@@ -176,7 +176,7 @@
     <script>
     // Enhanced Fancybox initialization with better-formatted captions
     Fancybox.bind("[data-fancybox]", {
-        // Use caption function to display project information below PDF with better formatting
+        // Use caption function to display project information below PDF with improved typography
         caption: function (instance, slide) {
             // Get the data attributes
             const title = slide.triggerEl.dataset.docTitle || "";
@@ -184,29 +184,27 @@
             const client = slide.triggerEl.dataset.client || "";
             const desc = slide.triggerEl.dataset.fullDesc || "";
             
-            // Create a formatted HTML caption with all project info and better structure
-            let captionHTML = '<div class="caption-container">';
+            // Create a formatted HTML caption with improved typography and spacing
+            let captionHTML = '';
             
             if (title) {
-                captionHTML += `<h3>${title}</h3>`;
+                captionHTML += `<h3 style="margin: 0 0 15px 0; font-weight: bold; font-size: 20px; color: #333; font-family: var(--f-family); line-height: 1.3;">${title}</h3>`;
             }
             
             if (format || client) {
-                captionHTML += '<div class="meta-info">';
+                captionHTML += '<div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-family: var(--f-family);">';
                 if (format) {
-                    captionHTML += `<div><strong>Format:</strong> ${format}</div>`;
+                    captionHTML += `<div style="font-size: 15px;"><strong>Format:</strong> ${format}</div>`;
                 }
                 if (client) {
-                    captionHTML += `<div><strong>Client:</strong> ${client}</div>`;
+                    captionHTML += `<div style="font-size: 15px;"><strong>Client:</strong> ${client}</div>`;
                 }
                 captionHTML += '</div>';
             }
             
             if (desc) {
-                captionHTML += `<div class="description">${desc}</div>`;
+                captionHTML += `<div style="margin-top: 10px; line-height: 1.6; font-size: 15px; font-family: var(--f-family); color: #444;">${desc}</div>`;
             }
-            
-            captionHTML += '</div>';
             
             return captionHTML;
         },
