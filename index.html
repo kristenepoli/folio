@@ -174,32 +174,10 @@
     <!-- Fancybox JS -->
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script>
-    // Enhanced Fancybox initialization with sidebar descriptions
+    // Fixed Fancybox initialization with sidebar that preserves PDF display
     Fancybox.bind("[data-fancybox]", {
-        // Configure template to include sidebar
-        template: {
-            // Add a sidebar to the content area
-            main: '<div class="fancybox__container" role="dialog" aria-modal="true" aria-label="{{MODAL}}" tabindex="-1">' +
-                '<div class="fancybox__backdrop"></div>' +
-                '<div class="fancybox__carousel"></div>' +
-                '<div class="fancybox__footer"></div>' +
-                '</div>',
-            
-            // Create a layout with content on left and sidebar on right
-            content: '<div class="fancybox__content" style="display: flex; max-width: 90vw; width: 1200px;">' +
-                '<div class="fancybox__content-inner" style="flex: 2; overflow: auto; max-height: 80vh;">' +
-                '{{CONTENT}}' +
-                '</div>' +
-                '<div class="fancybox__sidebar" style="flex: 1; padding: 20px; background: #f5f5f5; overflow: auto; max-height: 80vh; margin-left: 20px; border-radius: 5px;">' +
-                '<h2 style="margin-top: 0; font-family: var(--f-family);">{{TITLE}}</h2>' +
-                '<div style="margin-bottom: 15px;"><strong>Format:</strong> {{FORMAT}}</div>' +
-                '<div style="margin-bottom: 15px;"><small>Client: {{CLIENT}}</small></div>' +
-                '<div class="description" style="line-height: 1.6;">{{DESC}}</div>' +
-                '</div>' +
-                '</div>'
-        },
-        
-        // Custom options for our template
+        // Use standard Fancybox template to ensure PDFs display properly
+        // but add sidebar functionality
         on: {
             reveal: function(fancybox, slide) {
                 // Get content for sidebar
@@ -208,16 +186,29 @@
                 const client = slide.triggerEl.dataset.client || "";
                 const desc = slide.triggerEl.dataset.fullDesc || "";
                 
-                // Find sidebar elements and update content
-                const sidebar = fancybox.$container.querySelector(".fancybox__sidebar");
-                if (sidebar) {
-                    // Replace placeholders with actual content
-                    let html = sidebar.innerHTML;
-                    html = html.replace("{{TITLE}}", title);
-                    html = html.replace("{{FORMAT}}", format);
-                    html = html.replace("{{CLIENT}}", client);
-                    html = html.replace("{{DESC}}", desc);
-                    sidebar.innerHTML = html;
+                // Only proceed if we have content for the sidebar
+                if (title || format || client || desc) {
+                    // Create sidebar element if it doesn't exist
+                    let sidebar = fancybox.$container.querySelector(".fancybox-sidebar");
+                    if (!sidebar) {
+                        // Create the sidebar element
+                        sidebar = document.createElement("div");
+                        sidebar.className = "fancybox-sidebar";
+                        sidebar.style.cssText = "position: absolute; top: 0; right: 0; width: 300px; height: 100%; background: #f5f5f5; padding: 20px; overflow-y: auto; z-index: 9999; border-left: 1px solid #ddd;";
+                        
+                        // Insert the sidebar into the container
+                        const container = fancybox.$container.querySelector(".fancybox__carousel");
+                        container.style.paddingRight = "300px";
+                        container.appendChild(sidebar);
+                    }
+                    
+                    // Update sidebar content
+                    sidebar.innerHTML = `
+                        <h2 style="margin-top: 0; font-family: var(--f-family); font-size: 18px;">${title}</h2>
+                        <div style="margin-bottom: 15px;"><strong>Format:</strong> ${format}</div>
+                        <div style="margin-bottom: 15px;"><small>Client: ${client}</small></div>
+                        <div class="description" style="line-height: 1.6; font-size: 14px;">${desc}</div>
+                    `;
                 }
             }
         },
