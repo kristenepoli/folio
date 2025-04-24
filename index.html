@@ -174,9 +174,9 @@
     <!-- Fancybox JS -->
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script>
-    // Enhanced Fancybox initialization with detailed captions instead of sidebar
+    // Enhanced Fancybox initialization with better-formatted captions
     Fancybox.bind("[data-fancybox]", {
-        // Use caption function to display project information below PDF
+        // Use caption function to display project information below PDF with better formatting
         caption: function (instance, slide) {
             // Get the data attributes
             const title = slide.triggerEl.dataset.docTitle || "";
@@ -184,15 +184,15 @@
             const client = slide.triggerEl.dataset.client || "";
             const desc = slide.triggerEl.dataset.fullDesc || "";
             
-            // Create a formatted HTML caption with all project info
-            let captionHTML = '';
+            // Create a formatted HTML caption with all project info and better structure
+            let captionHTML = '<div class="caption-container">';
             
             if (title) {
-                captionHTML += `<h3 style="margin: 0 0 10px 0; font-weight: bold; font-size: 18px; color: #333;">${title}</h3>`;
+                captionHTML += `<h3>${title}</h3>`;
             }
             
             if (format || client) {
-                captionHTML += '<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">';
+                captionHTML += '<div class="meta-info">';
                 if (format) {
                     captionHTML += `<div><strong>Format:</strong> ${format}</div>`;
                 }
@@ -203,8 +203,10 @@
             }
             
             if (desc) {
-                captionHTML += `<div style="margin-top: 10px; line-height: 1.5; font-size: 14px;">${desc}</div>`;
+                captionHTML += `<div class="description">${desc}</div>`;
             }
+            
+            captionHTML += '</div>';
             
             return captionHTML;
         },
