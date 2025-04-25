@@ -175,102 +175,96 @@
     <!-- Fancybox JS -->
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script>
-    // Enhanced Fancybox initialization with sidebar layout for PDFs
+// Enhanced Fancybox initialization with sidebar-like caption panel
 Fancybox.bind("[data-fancybox]", {
-    // Custom template for the sidebar layout
-    template: {
-        // Maintain the main Fancybox structure but add sidebar
-        main: '<div class="fancybox__container" role="dialog" aria-modal="true" aria-label="{{MODAL}}" tabindex="-1">\
-                <div class="fancybox__backdrop"></div>\
-                <div class="fancybox__carousel"></div>\
-                <div class="fancybox__sidebar"></div>\
-                <div class="fancybox__footer"></div>\
-              </div>'
-    },
-    
-    // Override the click method to handle our custom layout
-    on: {
-        init: (fancybox) => {
-            // Create sidebar only for PDFs
-            fancybox.on("reveal", (fancybox, slide) => {
-                // Check if the content is a PDF (either by extension or data attribute)
-                const isPDF = slide.src && 
-                             (slide.src.toLowerCase().endsWith(".pdf") || 
-                              slide.triggerEl.dataset.type === "pdf");
-                
-                if (isPDF) {
-                    // Get the sidebar container
-                    const sidebar = fancybox.container.querySelector(".fancybox__sidebar");
-                    
-                    if (sidebar) {
-                        // Get the data attributes for the sidebar content
-                        const title = slide.triggerEl.dataset.docTitle || "";
-                        const format = slide.triggerEl.dataset.format || "";
-                        const client = slide.triggerEl.dataset.client || "";
-                        const desc = slide.triggerEl.dataset.fullDesc || "";
-                        
-                        // Create the sidebar content
-                        let sidebarHTML = '<div class="sidebar-content">';
-                        
-                        if (title) {
-                            sidebarHTML += `<h3 class="sidebar-title">${title}</h3>`;
-                        }
-                        
-                        if (format || client) {
-                            sidebarHTML += '<div class="sidebar-metadata">';
-                            if (format) {
-                                sidebarHTML += `<div class="sidebar-format"><strong>Format:</strong> ${format}</div>`;
-                            }
-                            if (client) {
-                                sidebarHTML += `<div class="sidebar-client"><strong>Client:</strong> ${client}</div>`;
-                            }
-                            sidebarHTML += '</div>';
-                        }
-                        
-                        if (desc) {
-                            sidebarHTML += `<div class="sidebar-description">${desc}</div>`;
-                        }
-                        
-                        sidebarHTML += '</div>';
-                        
-                        // Set the sidebar content
-                        sidebar.innerHTML = sidebarHTML;
-                        
-                        // Make the sidebar visible
-                        sidebar.style.display = "block";
-                        
-                        // Adjust the main content width to accommodate the sidebar
-                        const carousel = fancybox.container.querySelector(".fancybox__carousel");
-                        if (carousel) {
-                            carousel.style.width = "calc(100% - 300px)";
-                        }
-                    }
-                } else {
-                    // Hide sidebar for non-PDF content
-                    const sidebar = fancybox.container.querySelector(".fancybox__sidebar");
-                    if (sidebar) {
-                        sidebar.style.display = "none";
-                        
-                        // Reset carousel width
-                        const carousel = fancybox.container.querySelector(".fancybox__carousel");
-                        if (carousel) {
-                            carousel.style.width = "100%";
-                        }
-                    }
+    // Keep the original caption function but modify the styling to make it look like a sidebar
+    caption: function (instance, slide) {
+        // Get the data attributes
+        const title = slide.triggerEl.dataset.docTitle || "";
+        const format = slide.triggerEl.dataset.format || "";
+        const client = slide.triggerEl.dataset.client || "";
+        const desc = slide.triggerEl.dataset.fullDesc || "";
+        
+        // Only create captions for PDFs
+        if (slide.src && slide.src.toLowerCase().endsWith('.pdf')) {
+            // Create a formatted HTML caption with improved typography and spacing
+            let captionHTML = '<div class="pdf-sidebar-caption">';
+            
+            if (title) {
+                captionHTML += `<h3 class="sidebar-title">${title}</h3>`;
+            }
+            
+            if (format || client) {
+                captionHTML += '<div class="sidebar-metadata">';
+                if (format) {
+                    captionHTML += `<div class="sidebar-format"><strong>Format:</strong> ${format}</div>`;
                 }
-            });
+                if (client) {
+                    captionHTML += `<div class="sidebar-client"><strong>Client:</strong> ${client}</div>`;
+                }
+                captionHTML += '</div>';
+            }
+            
+            if (desc) {
+                captionHTML += `<div class="sidebar-description">${desc}</div>`;
+            }
+            
+            captionHTML += '</div>';
+            
+            return captionHTML;
         }
+        
+        return ""; // No caption for non-PDF content
     },
     
-    // Disable the default caption since we're using the sidebar
-    caption: false,
-    
-    // Basic toolbar with minimal options
+    // Basic toolbar with counter and close button
     Toolbar: {
         display: [
             { id: "counter", position: "center" },
             { id: "close", position: "right" }
         ]
+    },
+    
+    // PDF-specific iframe settings
+    iframe: {
+        css: {
+            width: "100%", 
+            height: "100%"
+        },
+        preload: false,
+        attr: {
+            scrolling: "auto"
+        }
+    },
+    
+    // Custom CSS class for the container
+    class: {
+        container: "fancybox-pdf-container"
+    },
+    
+    // Make the caption visible and styled as a sidebar
+    on: {
+        done: (fancybox, slide) => {
+            if (slide.src && slide.src.toLowerCase().endsWith('.pdf')) {
+                // Add a class to the container when showing PDFs
+                fancybox.container.classList.add("pdf-with-sidebar");
+                
+                // Find and try to hide PDF viewer toolbars after iframe loads
+                const iframe = fancybox.container.querySelector('iframe');
+                if (iframe) {
+                    iframe.addEventListener('load', function() {
+                        try {
+                            const iframeDoc = iframe.contentWindow.document || iframe.contentDocument;
+                            const toolbar = iframeDoc.getElementById('toolbarContainer');
+                            if (toolbar) toolbar.style.display = 'none';
+                        } catch (e) {
+                            // Same-origin policy might block this
+                            console.log('Could not access iframe content due to same-origin policy');
+                        }
+                    });
+                }
+            }
+        }
     }
 });
     </script>
