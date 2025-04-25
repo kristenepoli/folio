@@ -175,49 +175,104 @@
     <!-- Fancybox JS -->
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script>
-    // Enhanced Fancybox initialization with better-formatted captions and white text
-    Fancybox.bind("[data-fancybox]", {
-        // Use caption function to display project information below PDF with improved typography
-        caption: function (instance, slide) {
-            // Get the data attributes
-            const title = slide.triggerEl.dataset.docTitle || "";
-            const format = slide.triggerEl.dataset.format || "";
-            const client = slide.triggerEl.dataset.client || "";
-            const desc = slide.triggerEl.dataset.fullDesc || "";
-            
-            // Create a formatted HTML caption with improved typography and spacing - all text in white
-            let captionHTML = '';
-            
-            if (title) {
-                captionHTML += `<h3 style="margin: 0 0 15px 0; font-weight: bold; font-size: 20px; color: white; font-family: var(--f-family); line-height: 1.3;">${title}</h3>`;
-            }
-            
-            if (format || client) {
-                captionHTML += '<div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-family: var(--f-family);">';
-                if (format) {
-                    captionHTML += `<div style="font-size: 15px; color: white;"><strong>Format:</strong> ${format}</div>`;
+    // Enhanced Fancybox initialization with sidebar layout for PDFs
+Fancybox.bind("[data-fancybox]", {
+    // Custom template for the sidebar layout
+    template: {
+        // Maintain the main Fancybox structure but add sidebar
+        main: '<div class="fancybox__container" role="dialog" aria-modal="true" aria-label="{{MODAL}}" tabindex="-1">\
+                <div class="fancybox__backdrop"></div>\
+                <div class="fancybox__carousel"></div>\
+                <div class="fancybox__sidebar"></div>\
+                <div class="fancybox__footer"></div>\
+              </div>'
+    },
+    
+    // Override the click method to handle our custom layout
+    on: {
+        init: (fancybox) => {
+            // Create sidebar only for PDFs
+            fancybox.on("reveal", (fancybox, slide) => {
+                // Check if the content is a PDF (either by extension or data attribute)
+                const isPDF = slide.src && 
+                             (slide.src.toLowerCase().endsWith(".pdf") || 
+                              slide.triggerEl.dataset.type === "pdf");
+                
+                if (isPDF) {
+                    // Get the sidebar container
+                    const sidebar = fancybox.container.querySelector(".fancybox__sidebar");
+                    
+                    if (sidebar) {
+                        // Get the data attributes for the sidebar content
+                        const title = slide.triggerEl.dataset.docTitle || "";
+                        const format = slide.triggerEl.dataset.format || "";
+                        const client = slide.triggerEl.dataset.client || "";
+                        const desc = slide.triggerEl.dataset.fullDesc || "";
+                        
+                        // Create the sidebar content
+                        let sidebarHTML = '<div class="sidebar-content">';
+                        
+                        if (title) {
+                            sidebarHTML += `<h3 class="sidebar-title">${title}</h3>`;
+                        }
+                        
+                        if (format || client) {
+                            sidebarHTML += '<div class="sidebar-metadata">';
+                            if (format) {
+                                sidebarHTML += `<div class="sidebar-format"><strong>Format:</strong> ${format}</div>`;
+                            }
+                            if (client) {
+                                sidebarHTML += `<div class="sidebar-client"><strong>Client:</strong> ${client}</div>`;
+                            }
+                            sidebarHTML += '</div>';
+                        }
+                        
+                        if (desc) {
+                            sidebarHTML += `<div class="sidebar-description">${desc}</div>`;
+                        }
+                        
+                        sidebarHTML += '</div>';
+                        
+                        // Set the sidebar content
+                        sidebar.innerHTML = sidebarHTML;
+                        
+                        // Make the sidebar visible
+                        sidebar.style.display = "block";
+                        
+                        // Adjust the main content width to accommodate the sidebar
+                        const carousel = fancybox.container.querySelector(".fancybox__carousel");
+                        if (carousel) {
+                            carousel.style.width = "calc(100% - 300px)";
+                        }
+                    }
+                } else {
+                    // Hide sidebar for non-PDF content
+                    const sidebar = fancybox.container.querySelector(".fancybox__sidebar");
+                    if (sidebar) {
+                        sidebar.style.display = "none";
+                        
+                        // Reset carousel width
+                        const carousel = fancybox.container.querySelector(".fancybox__carousel");
+                        if (carousel) {
+                            carousel.style.width = "100%";
+                        }
+                    }
                 }
-                if (client) {
-                    captionHTML += `<div style="font-size: 15px; color: white;"><strong>Client:</strong> ${client}</div>`;
-                }
-                captionHTML += '</div>';
-            }
-            
-            if (desc) {
-                captionHTML += `<div style="margin-top: 10px; line-height: 1.6; font-size: 15px; font-family: var(--f-family); color: white;">${desc}</div>`;
-            }
-            
-            return captionHTML;
-        },
-        
-        // Basic toolbar with minimal options
-        Toolbar: {
-            display: [
-                { id: "counter", position: "center" },
-                { id: "close", position: "right" }
-            ]
+            });
         }
-    });
+    },
+    
+    // Disable the default caption since we're using the sidebar
+    caption: false,
+    
+    // Basic toolbar with minimal options
+    Toolbar: {
+        display: [
+            { id: "counter", position: "center" },
+            { id: "close", position: "right" }
+        ]
+    }
+});
     </script>
 
 </body>
