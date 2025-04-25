@@ -1,16 +1,11 @@
-/* Styles for FancyBox sidebar implementation */
+/* Styles for FancyBox PDF sidebar appearance */
 
-/* Adjust the main FancyBox container to make room for the sidebar */
-.fancybox__container {
-    --fancybox-sidebar-width: 300px;
-}
-
-/* Style the sidebar container */
-.fancybox__sidebar {
+/* Make the caption area look like a sidebar for PDFs */
+.pdf-with-sidebar .fancybox__caption {
     position: absolute;
     top: 0;
     right: 0;
-    width: var(--fancybox-sidebar-width);
+    width: 300px;
     height: 100%;
     background-color: #1a1a1a;
     color: #fff;
@@ -18,16 +13,20 @@
     padding: 2rem;
     z-index: 40;
     box-sizing: border-box;
-    display: none; /* Initially hidden, will be shown for PDFs */
+    text-align: left;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
 }
 
-/* Adjust the carousel to make room for the sidebar */
-.fancybox__container .fancybox__carousel {
-    width: 100%; /* Default width, will be adjusted for PDFs */
+/* Adjust content area to make room for the sidebar */
+.pdf-with-sidebar .fancybox__content {
+    width: calc(100% - 300px) !important;
+    margin-right: 300px;
 }
 
 /* Sidebar content styling */
-.sidebar-content {
+.pdf-sidebar-caption {
     font-family: var(--f-family);
     padding-top: 2rem;
 }
@@ -60,9 +59,14 @@
     color: white;
 }
 
+/* Hide PDF native toolbar elements */
+.fancybox__content iframe {
+    border: none;
+}
+
 /* Responsive adjustments for mobile */
 @media (max-width: 768px) {
-    .fancybox__sidebar {
+    .pdf-with-sidebar .fancybox__caption {
         position: fixed;
         top: auto;
         bottom: 0;
@@ -70,10 +74,12 @@
         right: 0;
         width: 100%;
         height: auto;
-        max-height: 50vh;
+        max-height: 40vh;
     }
     
-    .fancybox__container .fancybox__carousel {
+    .pdf-with-sidebar .fancybox__content {
         width: 100% !important;
+        margin-right: 0;
+        margin-bottom: 40vh;
     }
 }
