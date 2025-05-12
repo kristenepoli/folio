@@ -1,4 +1,4 @@
-x<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <!-- Meta -->
@@ -8,9 +8,8 @@ x<!DOCTYPE html>
     <!-- Styles -->
     <link href="assets/css/main.css" rel="stylesheet">
 
-    <!-- Fancybox CSS -->
+    <!-- Fancybox CSS - removed the sidebar CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>
-    <link rel="stylesheet" href="assets/css/fancybox-sidebar.css"/>
     
     <!-- Favicons -->
     <title>Kristen Poli</title>
@@ -200,102 +199,61 @@ x<!DOCTYPE html>
     <!-- Scripts -->
     <script src="assets/js/main.js"></script>
 
-    <!-- Remove the preview image comment since we're not using them anymore -->
     <!-- Fancybox JS -->
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script>
-// Enhanced Fancybox initialization with sidebar-like caption panel
-Fancybox.bind("[data-fancybox]", {
-    // Keep the original caption function but modify the styling to make it look like a sidebar
-    caption: function (instance, slide) {
-        // Get the data attributes
-        const title = slide.triggerEl.dataset.docTitle || "";
-        const format = slide.triggerEl.dataset.format || "";
-        const client = slide.triggerEl.dataset.client || "";
-        const desc = slide.triggerEl.dataset.fullDesc || "";
+    // Enhanced Fancybox initialization without any captions
+    Fancybox.bind("[data-fancybox]", {
+        // No caption function
+        caption: false,
         
-        // Only create captions for PDFs
-        if (slide.src && slide.src.toLowerCase().endsWith('.pdf')) {
-            // Create a formatted HTML caption with improved typography and spacing
-            let captionHTML = '<div class="pdf-sidebar-caption">';
-            
-            if (title) {
-                captionHTML += `<h3 class="sidebar-title">${title}</h3>`;
-            }
-            
-            if (format || client) {
-                captionHTML += '<div class="sidebar-metadata">';
-                if (format) {
-                    captionHTML += `<div class="sidebar-format"><strong>Format:</strong> ${format}</div>`;
-                }
-                if (client) {
-                    captionHTML += `<div class="sidebar-client"><strong>Client:</strong> ${client}</div>`;
-                }
-                captionHTML += '</div>';
-            }
-            
-            if (desc) {
-                captionHTML += `<div class="sidebar-description">${desc}</div>`;
-            }
-            
-            captionHTML += '</div>';
-            
-            return captionHTML;
-        }
-        
-        return ""; // No caption for non-PDF content
-    },
-    
-    // Basic toolbar with counter and close button
-    Toolbar: {
-        display: [
-            { id: "counter", position: "center" },
-            { id: "close", position: "right" }
-        ]
-    },
-    
-    // PDF-specific iframe settings
-    iframe: {
-        css: {
-            width: "100%", 
-            height: "100%"
+        // Basic toolbar with counter and close button
+        Toolbar: {
+            display: [
+                { id: "counter", position: "center" },
+                { id: "close", position: "right" }
+            ]
         },
-        preload: false,
-        attr: {
-            scrolling: "auto"
-        }
-    },
-    
-    // Custom CSS class for the container
-    class: {
-        container: "fancybox-pdf-container"
-    },
-    
-    // Make the caption visible and styled as a sidebar
-    on: {
-        done: (fancybox, slide) => {
-            if (slide.src && slide.src.toLowerCase().endsWith('.pdf')) {
-                // Add a class to the container when showing PDFs
-                fancybox.container.classList.add("pdf-with-sidebar");
-                
-                // Find and try to hide PDF viewer toolbars after iframe loads
-                const iframe = fancybox.container.querySelector('iframe');
-                if (iframe) {
-                    iframe.addEventListener('load', function() {
-                        try {
-                            const iframeDoc = iframe.contentWindow.document || iframe.contentDocument;
-                            const toolbar = iframeDoc.getElementById('toolbarContainer');
-                            if (toolbar) toolbar.style.display = 'none';
-                        } catch (e) {
-                            // Same-origin policy might block this
-                            console.log('Could not access iframe content due to same-origin policy');
-                        }
-                    });
+        
+        // PDF-specific iframe settings
+        iframe: {
+            css: {
+                width: "100%", 
+                height: "100%"
+            },
+            preload: false,
+            attr: {
+                scrolling: "auto"
+            }
+        },
+        
+        // Custom CSS class for the container but without sidebar styling
+        class: {
+            container: "fancybox-pdf-container"
+        },
+        
+        // Remove the sidebar styling completely
+        on: {
+            done: (fancybox, slide) => {
+                if (slide.src && slide.src.toLowerCase().endsWith('.pdf')) {
+                    // Find and try to hide PDF viewer toolbars after iframe loads
+                    const iframe = fancybox.container.querySelector('iframe');
+                    if (iframe) {
+                        iframe.addEventListener('load', function() {
+                            try {
+                                const iframeDoc = iframe.contentWindow.document || iframe.contentDocument;
+                                const toolbar = iframeDoc.getElementById('toolbarContainer');
+                                if (toolbar) toolbar.style.display = 'none';
+                            } catch (e) {
+                                // Same-origin policy might block this
+                                console.log('Could not access iframe content due to same-origin policy');
+                            }
+                        });
+                    }
                 }
             }
         }
-    }
-});
+    });
     </script>
 
 </body>
